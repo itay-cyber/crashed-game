@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //obj vars
     public GameObject playerObj;
     public Animator playerAnimator;
     public Rigidbody rb;
+    public int walkForce = 50;
+    public int sprintForce = 70;
 
     //bools
     public bool isRunning;
@@ -17,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     //hash
     private int isWalkingHash;
     private int isRunningHash;
+    
+
     
     void Start()
     {
@@ -39,26 +44,43 @@ public class PlayerMovement : MonoBehaviour
         //walk forward
         if (!isWalking && forwardPressed)
         {
+            EnableRigidBody();
+            rb.AddForce(transform.forward * walkForce);
             playerAnimator.SetBool(isWalkingHash, true);
         } 
 
         //stop walking
         if (isWalking && !forwardPressed)
         {
+            DisableRigidBody();
             playerAnimator.SetBool(isWalkingHash, false);
         }
 
         //run forward
         if (!isRunning && (forwardPressed && runPressed))
         {
+
             playerAnimator.SetBool(isRunningHash, true);
         }
 
         //stop running
         if (isRunning && (!forwardPressed || !runPressed))
         {
+
             playerAnimator.SetBool(isRunningHash, false);
         }
 
+    }
+
+    void EnableRigidBody()
+    {
+        rb.isKinematic = false;
+        rb.detectCollisions = true;
+    }
+
+    void DisableRigidBody()
+    {
+        rb.isKinematic = true;
+        rb.detectCollisions = false;
     }
 }
