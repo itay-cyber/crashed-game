@@ -13,14 +13,16 @@ public class PlayerMovement : MonoBehaviour
 
     //bools
     public bool isRunning;
+    public bool isWalkingBackward;
     public bool isWalking;
     public bool runPressed;
     public bool forwardPressed;
+    public bool backwardsPressed;    
     
     //hash
     private int isWalkingHash;
     private int isRunningHash;
-    
+    private int isWalkingBackwardsHash;
 
     
     void Start()
@@ -30,16 +32,19 @@ public class PlayerMovement : MonoBehaviour
 
         isWalkingHash = Animator.StringToHash("isWalking");
         isRunningHash = Animator.StringToHash("isRunning");
-
+        isWalkingBackwardsHash = Animator.StringToHash("isWalkingBackwards");
     }
 
     void Update()
     {
+        isWalkingBackward = playerAnimator.GetBool(isWalkingBackwardsHash);
         isWalking = playerAnimator.GetBool(isWalkingHash);
         isRunning = playerAnimator.GetBool(isRunningHash);
 
+        backwardsPressed = Input.GetKey("s");
         forwardPressed = Input.GetKey("w");
         runPressed = Input.GetKey("left shift");
+
 
         //walk forward
         if (!isWalking && forwardPressed)
@@ -59,16 +64,33 @@ public class PlayerMovement : MonoBehaviour
         //run forward
         if (!isRunning && (forwardPressed && runPressed))
         {
-
+            EnableRigidBody();
+            rb.AddForce(transform.forward * sprintForce);
             playerAnimator.SetBool(isRunningHash, true);
         }
 
         //stop running
         if (isRunning && (!forwardPressed || !runPressed))
         {
-
+            DisableRigidBody();
             playerAnimator.SetBool(isRunningHash, false);
         }
+
+        //walking backwards
+        if (!isWalkingBackward && backwardsPressed)
+        {
+            EnableRigidBody();
+            rb.AddForce(-transform.forward * walkForce);
+            playerAnimator.SetBool(isWalkingBackwardsHash, true);
+        }    
+
+        //stop walking backwards
+        if (isWalkingBackward && !backwardsPressed)
+        {
+            DisableRigidBody();
+            playerAnimator.SetBool(isWalkingBackwardsHash, false);
+        }
+
 
     }
 
