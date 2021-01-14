@@ -17,7 +17,7 @@ public class healthController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Heart.rectTransform.sizeDelta = new Vector2(139.5394f,85.22728f/100 * Health);
+        heartImg.rectTransform.sizeDelta = new Vector2(139.5394f,85.22728f/100 * health);
     }
 
     //for now, param 2 is string
