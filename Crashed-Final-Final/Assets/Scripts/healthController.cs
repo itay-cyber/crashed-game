@@ -10,6 +10,7 @@ public class healthController : MonoBehaviour
     private float maxHealth = 100.0f;
 
     public Image heartImg;
+    public GameObject playerObj;
     #endregion
 
     #region Logic Methods
@@ -53,6 +54,8 @@ public class healthController : MonoBehaviour
             Debug.Log("The player health has reached max.");
         }
     }
+
+
     #endregion
 
     #region Built-In Methods
@@ -64,6 +67,10 @@ public class healthController : MonoBehaviour
     {
         //fill up heart ui
         heartImg.rectTransform.sizeDelta = new Vector2(139.5394f, 85.22728f / 100 * health);
+
+        //update entity attributes
+
+        playerObj.GetComponent<attributesController>().entityHealth = health;
     }
     #endregion
 }

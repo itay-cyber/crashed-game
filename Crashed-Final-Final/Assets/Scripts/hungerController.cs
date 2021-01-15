@@ -40,12 +40,67 @@ public class hungerController : MonoBehaviour
             Debug.Log("Player's hunger reached max.");
         }
     }
+
+
+    private float calculateHungerDecrease()
+    {
+        float decrease = 0; //per second
+        int playerLevel = playerObj.GetComponent<attributesController>().entityLevel;
+
+        if (playerLevel < 5)
+        {
+            decrease = 6f;
+        }
+        else if (playerLevel >= 5)
+        {
+            decrease = 5f;
+        }
+        else if (playerLevel >= 10)
+        {
+            decrease = 4.8f;
+        }
+        else if (playerLevel >= 15)
+        {
+            decrease = 4.5f;
+        }
+        else if (playerLevel >= 20)
+        {
+            decrease = 4.2f;
+        }
+        else if (playerLevel >= 25)
+        {
+            decrease = 4.0f;
+        }
+        else if (playerLevel >= 30)
+        {
+            decrease = 3.5f;
+        }
+
+        return decrease;
+    }
+
+    #endregion
+
+    #region IEnumerators
+
+    IEnumerator HungerLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(100f);
+            GetHungry(calculateHungerDecrease());
+        }
+    }
+
     #endregion
 
     #region Built-In Methods
 
     // Start is called before the first frame update
-    void Start() { }
+    void Start() 
+    {
+        StartCoroutine(HungerLoop());
+    }
 
     // Update is called once per frame
     void Update()
