@@ -5,12 +5,28 @@ using UnityEngine.UI;
 
 public class hungerController : MonoBehaviour
 {
-    public float hunger = 100f;
+    public GameObject playerObj;
+
+    public float hunger = 100.0f;
     public Image hungerImg;
+
+
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+    
+    void GetHungry(float howHungry)
+    {
+        if (hunger > 0)
+        {
+            hunger -= howHungry;
+        }
+        else
+        {
+            playerObj.GetComponent<healthController>().PlayerDIE("starvation");
+        }
     }
 
     // Update is called once per frame

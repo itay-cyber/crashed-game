@@ -11,7 +11,7 @@ public class healthController : MonoBehaviour
 	// Start is called before the first frame update
     void Start()
     {
-        TakeDamage(50.0f, "Was stung by a psychotic tree... ");
+        
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class healthController : MonoBehaviour
     }
 
     //for now, param 2 is string
-    void TakeDamage(float howMuchDamage, string reasonHit)
+    public void TakeDamage(float howMuchDamage, string reasonHit)
     {
         health -= howMuchDamage;
         if (health <= 0)
@@ -35,11 +35,11 @@ public class healthController : MonoBehaviour
         }
     }
 
-    void PlayerDIE(string reasonOfDeath)
+    public void PlayerDIE(string reasonOfDeath)
     {
         //die
         //play death animation.. (ragdoll)?
-           
-        Debug.Log("Player died from " + reasonOfDeath);
+        
+        Debug.Log("Player died from " + reasonOfDeath + ".");
     }
 }
