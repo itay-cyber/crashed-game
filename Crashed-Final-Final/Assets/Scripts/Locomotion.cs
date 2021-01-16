@@ -17,6 +17,8 @@ public class Locomotion : MonoBehaviour
     private float m_movementSpeed = 3f;
 
 
+    public bool runPressed;
+    public bool isRunning;
     private Vector3 m_movementDir;
     private float m_inputAmount;
     private Vector3 m_raycastFloorPos;
@@ -30,15 +32,32 @@ public class Locomotion : MonoBehaviour
 
     private void FixedUpdate()
     {
+        runPressed = Input.GetKey("left shift");
+        isRunning = m_animator.GetBool("isRunning");
+
         UpdateMovementInput();
         UpdatePhysics();
         UpdateAnimation();
     }
+
+
     #endregion
 
     #region Custom Methods
     private void UpdateMovementInput()
     {
+        if (runPressed && !isRunning)
+        {
+            m_animator.SetBool("isRunning", true);
+            m_movementSpeed = 6f;
+        }
+        if (!runPressed && isRunning)
+        {
+            m_animator.SetBool("isRunning", false);
+            m_movementSpeed = 3f;
+        }
+
+
         m_movementDir = Vector3.zero;
 
         Vector3 forward = m_inputManager.Forward * transform.forward;
