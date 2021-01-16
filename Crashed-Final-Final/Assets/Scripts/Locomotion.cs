@@ -22,7 +22,7 @@ public class Locomotion : MonoBehaviour
     public bool runPressed;
     public bool isRunning;
     public bool jumpPressed;
-    public bool isJumping;
+    private bool playerOnTheGround = true;
 
     private Vector3 m_movementDir;
     private float m_inputAmount;
@@ -40,7 +40,6 @@ public class Locomotion : MonoBehaviour
         walkPressed = Input.GetKey("w");
         runPressed = Input.GetKey("left shift");
         isRunning = m_animator.GetBool("isRunning");
-        isJumping = m_animator.GetBool("isJumping"); 
         jumpPressed = Input.GetKeyDown(KeyCode.Space);
 
         UpdateMovementInput();
@@ -48,13 +47,12 @@ public class Locomotion : MonoBehaviour
         UpdateAnimation();
     }
 
-
     #endregion
 
     #region Custom Methods
     private void UpdateMovementInput()
     {
-
+  
         if (walkPressed && runPressed && !isRunning)
         {
             m_animator.SetBool("isRunning", true);
@@ -134,21 +132,14 @@ public class Locomotion : MonoBehaviour
             return 0;
         }
     }
-
     private void UpdateAnimation()
     {
-
-        if (jumpPressed && !isJumping)
-        {
-            m_animator.SetBool("isJumping", true);
-        }
-        if (!jumpPressed && isJumping)
-        {
-            m_animator.SetBool("isJumping", false);    
-        }
+        
 
         m_animator.SetFloat("Forward", m_inputManager.Forward);
         m_animator.SetFloat("Sideway", m_inputManager.Sideway);
     }
+
+    
     #endregion
 }
