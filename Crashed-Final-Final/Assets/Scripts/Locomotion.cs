@@ -14,11 +14,16 @@ public class Locomotion : MonoBehaviour
     [SerializeField]
     private float m_offsetFloorY = 0.4f;
     [SerializeField]
-    private float m_movementSpeed = 3f;
+    private float m_movementSpeed = 5f;
+    [SerializeField]
+    private float m_sprintSpeed = 7.5f;
 
-
+    public bool walkPressed;
     public bool runPressed;
     public bool isRunning;
+    public bool jumpPressed;
+    public bool isJumping;
+
     private Vector3 m_movementDir;
     private float m_inputAmount;
     private Vector3 m_raycastFloorPos;
@@ -32,8 +37,11 @@ public class Locomotion : MonoBehaviour
 
     private void FixedUpdate()
     {
+        walkPressed = Input.GetKey("w");
         runPressed = Input.GetKey("left shift");
         isRunning = m_animator.GetBool("isRunning");
+        isJumping = m_animator.GetBool("isJumping"); 
+        jumpPressed = Input.GetKeyDown(KeyCode.Space);
 
         UpdateMovementInput();
         UpdatePhysics();
@@ -46,12 +54,13 @@ public class Locomotion : MonoBehaviour
     #region Custom Methods
     private void UpdateMovementInput()
     {
-        if (runPressed && !isRunning)
+
+        if (walkPressed && runPressed && !isRunning)
         {
             m_animator.SetBool("isRunning", true);
-            m_movementSpeed = 6f;
+            m_movementSpeed = m_sprintSpeed;
         }
-        if (!runPressed && isRunning)
+        if (!runPressed && !walkPressed && isRunning)
         {
             m_animator.SetBool("isRunning", false);
             m_movementSpeed = 3f;
@@ -128,6 +137,16 @@ public class Locomotion : MonoBehaviour
 
     private void UpdateAnimation()
     {
+
+        if (jumpPressed && !isJumping)
+        {
+            m_animator.SetBool("isJumping", true);
+        }
+        if (!jumpPressed && isJumping)
+        {
+            m_animator.SetBool("isJumping", false);    
+        }
+
         m_animator.SetFloat("Forward", m_inputManager.Forward);
         m_animator.SetFloat("Sideway", m_inputManager.Sideway);
     }
